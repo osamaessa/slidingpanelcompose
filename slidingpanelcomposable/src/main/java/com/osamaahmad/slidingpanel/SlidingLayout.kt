@@ -37,13 +37,15 @@ fun SlidingLayout(
 
     showScrollable = slideState.value.slideType() != SlideType.None
 
-    if (slideState.value.slideType() == SlideType.Full){
+
+    if (slideState.value.slideType() == SlideType.Full) {
         currentHeight.value = heightFull
-    }else if (slideState.value.slideType() == SlideType.Center){
+    } else if (slideState.value.slideType() == SlideType.Center) {
         currentHeight.value = heightCenter
-    }else if (slideState.value.slideType() == SlideType.Bottom){
+    } else if (slideState.value.slideType() == SlideType.Bottom) {
         currentHeight.value = heightBottom
     }
+
     Box(modifier = modifier) {
         content()
 
@@ -106,11 +108,19 @@ private fun SlidingContent(
                 state = rememberDraggableState { delta ->
                     offsetY += delta
                     currentHeight.value += (delta / density) * -1
+                    Log.d(
+                        "ChangeState",
+                        "Height: ${currentHeight.value}, State: ${slideState.value.slideType()}"
+                    )
 
                 },
                 onDragStopped = {
                     if ((heightFull - currentHeight.value) <= fullMinHeight) {
-                        slideState.value.showFull()
+                        Log.d(
+                            "ChangeState",
+                            "Height: ${currentHeight.value}, State: ${slideState.value.slideType()}"
+                        )
+//                        slideState.value.showFull()
                         onSlideFull()
                         launch {
                             animate(
@@ -122,7 +132,7 @@ private fun SlidingContent(
                             }
                         }
                     } else if (currentHeight.value <= bottomMax) {
-                        slideState.value.showBottom()
+//                        slideState.value.showBottom()
                         onSlideBottom()
                         launch {
                             animate(
@@ -134,7 +144,7 @@ private fun SlidingContent(
                             }
                         }
                     } else {
-                        slideState.value.showCenter()
+//                        slideState.value.showCenter()
                         onSlideCenter()
                         launch {
                             animate(
